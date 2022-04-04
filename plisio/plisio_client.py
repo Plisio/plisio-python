@@ -105,6 +105,11 @@ class _BaseClient:
                 del data[key]
             elif isinstance(data[key], float):
                 data[key] = "{:.8f}".format(data[key]).rstrip('0')
+            elif isinstance(data[key], bool):
+                if data[key]:
+                    data[key] = '1'
+                else:
+                    del data[key]
 
     def __create_request(
             self,
@@ -120,19 +125,16 @@ class _BaseClient:
 
     def _get_balance_request(self, **kwargs) -> '_PlisioRequest':
         return self.__create_request(
-            self._url.balance,
-            {
-                'psys_cid': kwargs['currency'].name
-            },
+            self._url.balance + '/' + kwargs['currency'].name,
+            {},
             plisio.Balance
         )
 
     def _get_currencies_request(self, **kwargs) -> '_PlisioRequest':
+        url_ = '/' + kwargs['fiat_currency'].name if kwargs.get('fiat_currency') else ''
         return self.__create_request(
-            self._url.currencies,
-            {
-                'fiat': kwargs.get('fiat_currency') and kwargs['fiat_currency'].name
-            },
+            self._url.currencies + url_,
+            {},
             plisio.Currency
         )
 
@@ -155,6 +157,7 @@ class _BaseClient:
                 'language': kwargs['language'],
                 'plugin': kwargs['plugin'],
                 'version': kwargs['version'],
+                'redirect_to_invoice': kwargs['redirect_to_invoice'],
                 'expire_min': kwargs['expire_min'],
             },
             plisio.Invoice
@@ -248,7 +251,10 @@ class PlisioClient(_BaseClient):
                 params=request.data,
             )
             status = _req.status_code
-            data = _req.json()
+            if _req.history:
+                data = {'status': 'redirect', 'data': {'invoice_url': _req.url}}
+            else:
+                data = _req.json()
         except requests.exceptions.RequestException as re:
             raise plisio.UnknownPlisioAPIError() from re
         else:
@@ -289,6 +295,7 @@ class PlisioClient(_BaseClient):
             language: Optional[str] = 'en_US',
             plugin: Optional[str] = None,
             version: Optional[str] = None,
+            redirect_to_invoice: Optional[bool] = None,
             expire_min: Optional[int] = None,
     ) -> List['plisio.Invoice']:
         """
@@ -309,6 +316,7 @@ class PlisioClient(_BaseClient):
             language=language,
             plugin=plugin,
             version=version,
+            redirect_to_invoice=redirect_to_invoice,
             expire_min=expire_min,
         )
         return self._send_request(request)
@@ -341,9 +349,9 @@ class PlisioClient(_BaseClient):
             crypto_currency: 'plisio.CryptoCurrency',
             to: Union[str, List[str]],
             amount: Union[float, List[float]],
+            type_: Optional['plisio.OperationType'] = None,
             fee_plan: Optional['plisio.PlanName'] = None,
             fee_rate: Optional[float] = None,
-            type_: Optional['plisio.OperationType'] = None,
     ) -> 'plisio.Withdraw':
         """
         /operations/withdraw
@@ -353,9 +361,9 @@ class PlisioClient(_BaseClient):
             crypto_currency=crypto_currency,
             to=to,
             amount=amount,
+            type_=type_,
             fee_plan=fee_plan,
             fee_rate=fee_rate,
-            type_=type_,
         )
         return self._send_request(request)
 
@@ -435,7 +443,10 @@ class PlisioAioClient(_BaseClient):
                         params=request.data,
                 ) as _req:
                     status = _req.status
-                    data = await _req.json()
+                    if _req.history:
+                        data = {'status': 'redirect', 'data': {'invoice_url': _req.url}}
+                    else:
+                        data = await _req.json()
         except aiohttp.ClientError as ce:
             raise plisio.UnknownPlisioAPIError() from ce
         else:
@@ -481,6 +492,7 @@ class PlisioAioClient(_BaseClient):
             language: Optional[str] = 'en_US',
             plugin: Optional[str] = None,
             version: Optional[str] = None,
+            redirect_to_invoice: Optional[bool] = None,
             expire_min: Optional[int] = None,
     ) -> List['plisio.Invoice']:
         """
@@ -501,6 +513,7 @@ class PlisioAioClient(_BaseClient):
             language=language,
             plugin=plugin,
             version=version,
+            redirect_to_invoice=redirect_to_invoice,
             expire_min=expire_min,
         )
         return await self._send_request(request)
