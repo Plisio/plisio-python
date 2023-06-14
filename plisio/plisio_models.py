@@ -441,6 +441,51 @@ class OperationTx(PlisioModel):
         )
 
 
+class OperationParams(PlisioModel):
+    """
+    Sub-model for Operation
+    """
+
+    def __init__(
+            self,
+            order_number: str,
+            order_name: Optional[str],
+            source_amount: Optional[float],
+            source_currency: 'plisio.CryptoCurrency',
+            currency: Optional['plisio.CryptoCurrency'],
+            amount: Optional[float],
+            source_rate: float,
+            email: str,
+            usd_rate: Optional[float],
+            fee: Optional['Plan'],
+    ):
+        self.source_currency = source_currency
+        self.source_rate = source_rate
+        self.usd_rate = usd_rate
+        self.fee = fee
+        self.order_number = order_number
+        self.order_name = order_name
+        self.source_amount = source_amount
+        self.currency = currency
+        self.amount = amount
+        self.email = email
+
+    @classmethod
+    def from_response(cls, response_dict: 'plisio.RType') -> 'OperationParams':
+        return cls(
+            response_dict.get('order_number'),
+            response_dict.get('order_name'),
+            response_dict.get('source_amount') and float(response_dict['source_amount']),
+            response_dict.get('source_currency'),
+            response_dict.get('currency'),
+            response_dict.get('amount') and float(response_dict['amount']),
+            response_dict.get('source_rate') and float(response_dict['source_rate']),
+            response_dict.get('email'),
+            response_dict.get('usd_rate') and float(response_dict['usd_rate']),
+            response_dict.get('fee') and Plan.from_response(response_dict['fee']),
+        )
+
+
 class Operation(PlisioModel):
     """
     /operations
@@ -462,7 +507,7 @@ class Operation(PlisioModel):
             fee: float,
             wallet_hash: str,
             sendmany: List[Dict[str, float]],
-            params: 'WithdrawParams',
+            params: 'OperationParams',
             expire_at_utc: int,
             created_at_utc: int,
             amount: float,
@@ -519,7 +564,7 @@ class Operation(PlisioModel):
             response_dict.get('fee') and float(response_dict['fee']),
             response_dict.get('wallet_hash'),
             response_dict.get('sendmany') and [[{k: float(v)} for k, v in sm.items()] for sm in response_dict['sendmany']],
-            response_dict.get('params') and WithdrawParams.from_response(response_dict['params']),
+            response_dict.get('params') and OperationParams.from_response(response_dict['params']),
             response_dict.get('expire_at_utc') and int(response_dict['expire_at_utc']),
             response_dict.get('created_at_utc') and int(response_dict['created_at_utc']),
             response_dict.get('amount') and float(response_dict['amount']),
