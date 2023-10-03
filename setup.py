@@ -8,7 +8,7 @@ with open("README.md", "r") as fh:
 setup(
     name='plisio',
     packages=['plisio'],
-    version='1.0.2',
+    version='1.0.5',
     license='MIT',
     description='Official Python SDK for Plisio API',
     long_description=long_description,

@@ -17,8 +17,18 @@ class CryptoCurrency(Enum, metaclass=_EnumMeta):
     DOGE = 'Dogecoin'
     BCH = 'Bitcoin Cash'
     XMR = 'Monero'
-    USDT = 'Tether'
-    SHIB = 'Shiba Inu'
+    USDT = 'Tether ERC-20'
+    SHIB = 'Shiba Inu',
+    USDC = 'USD Coin ERC-20',
+    TRX = 'Tron',
+    USDT_TRX = 'Tether TRC-20',
+    BNB = 'BNB Chain',
+    USDT_BSC = 'Teather BEP-20',
+    BUSD = 'Binance USD BEP-20',
+    ETC = 'Ethereum Classic',
+    TZEC = 'Zcash',
+    BTT_TRX = 'BitTorrent-Chain TRC-20',
+    TUSD = 'TrueUSD ERC-20'
 
 
 class FiatCurrency(Enum, metaclass=_EnumMeta):

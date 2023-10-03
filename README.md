@@ -117,37 +117,25 @@ Create a few *Python* examples, where use:
 + all the fields besides the <code>source_currency</code> and the <code>source_amount</code>.
 ```python
 # Example: using required fields only
-first_invoice = plisio.create_invoice('currency', 'order_name', 'order_number')
+first_invoice = plisio.invoice(plisio.CryptoCurrency.BTC, 'order1', 20230903182401, 0.00001)
 
 # Example: using cryptocurrency
-second_invoice = plisio.create_invoice(
-    'currency',
-    'order_name',
-    'order_number',
-    amount='amount',
-    allowed_psys_cids='allowed_psys_cids',
-    description='description',
-    callback_url='callback_url',
-    email='email',
-    language='language',
-    plugin='plugin',
-    version='version',
+second_invoice = plisio.invoice(
+    plisio.CryptoCurrency.TRX,
+    'order2',
+    20230903182402,
+    amount=100,
+    email='test@plisio.net'
 )
 
 # Example: using fiat currency
-third_invoice = plisio.create_invoice(
-    'currency',
-    'order_name',
-    'order_number',
-    source_currency='fiat currency',
-    source_rate='source_rate',
-    allowed_psys_cids='allowed_psys_cids',
-    description='description',
-    callback_url='callback_url',
-    email='email',
-    language='language',
-    plugin='plugin',
-    version='version',
+third_invoice = plisio.invoice(
+    plisio.CryptoCurrency.TRX,
+    'order3',
+    20230903182403,
+    source_currency=plisio.FiatCurrency.USD,
+    source_rate=10.2,
+    allowed_currencies=[plisio.CryptoCurrency.TRX,plisio.CryptoCurrency.USDT_TRX]
 )
 ```
 
