@@ -280,12 +280,13 @@ class PlisioClient(_BaseClient):
         request = self._get_currencies_request(fiat_currency=fiat_currency)
         return self._send_request(request)
 
+
     def invoice(
             self,
             currency: 'plisio.CryptoCurrency',
             order_name: str,
             order_number: int,
-            amount: float,
+            amount: Optional[float] = None,
             source_currency: Optional['plisio.FiatCurrency'] = None,
             source_amount: Optional[float] = None,
             allowed_currencies: Optional[List['plisio.CryptoCurrency']] = None,
@@ -320,6 +321,8 @@ class PlisioClient(_BaseClient):
             expire_min=expire_min,
         )
         return self._send_request(request)
+    
+    create_invoice = invoice
 
     def get_commission(
             self,
