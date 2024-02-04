@@ -218,11 +218,10 @@ After that you are getting model <code>Withdraw</code> with fields:
 
 ```python
 withdraw = plisio.withdraw(
-    plisio.CryptoCurrency.ETH,
-    'hash1,hash2',
-    'amount1,amount2',
-    'normal',
-    0,
+    crypto_currency = plisio.CryptoCurrency.LTC,
+    to = 'wallet_address',
+    amount = float(0.01),
+    type_ = plisio.OperationType.cash_out
 )
 ```
 
