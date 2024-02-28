@@ -2,6 +2,9 @@ from typing import Type, Dict, Optional, Union, List, Any
 
 import aiohttp
 import requests
+import json
+import hmac
+import hashlib
 
 import plisio
 
@@ -240,6 +243,17 @@ class _BaseClient:
             plisio.Operation
         )
 
+    def validate_callback(self, data: str) -> bool:
+        jsonObj = json.loads(data)
+        verifyHash = jsonObj['verify_hash']
+        del jsonObj["verify_hash"]
+        json.dumps(jsonObj, sort_keys=True)
+        key = bytes(str(self.__api_key), 'utf8')
+        postStr = bytes(json.dumps(jsonObj, separators=(',', ':')), 'utf8');
+        digester = hmac.new(key, postStr, hashlib.sha1)
+        hash = digester.hexdigest()
+        return hash == verifyHash
+
 
 class PlisioClient(_BaseClient):
     @staticmethod
@@ -321,7 +335,7 @@ class PlisioClient(_BaseClient):
             expire_min=expire_min,
         )
         return self._send_request(request)
-    
+
     create_invoice = invoice
 
     def get_commission(
