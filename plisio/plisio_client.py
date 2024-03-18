@@ -96,7 +96,7 @@ class _PlisioRequest:
 
 class _BaseClient:
     _url = _PlisioUrl
-    __api_url = 'https://plisio.net/api/v1/'
+    __api_url = 'https://api.plisio.net/api/v1/'
 
     def __init__(self, api_key: str):
         self.__api_key = api_key
