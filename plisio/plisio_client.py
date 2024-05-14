@@ -244,15 +244,15 @@ class _BaseClient:
         )
 
     def validate_callback(self, data: str) -> bool:
-        jsonObj = json.loads(data)
-        verifyHash = jsonObj['verify_hash']
-        del jsonObj["verify_hash"]
-        json.dumps(jsonObj, sort_keys=True)
+        json_obj = json.loads(data)
+        verify_hash = json_obj['verify_hash']
+        del json_obj["verify_hash"]
+        json.dumps(json_obj, sort_keys=True)
         key = bytes(str(self.__api_key), 'utf8')
-        postStr = bytes(json.dumps(jsonObj, separators=(',', ':')), 'utf8');
-        digester = hmac.new(key, postStr, hashlib.sha1)
+        post_str = bytes(json.dumps(json_obj, separators=(',', ':')), 'utf8')
+        digester = hmac.new(key, post_str, hashlib.sha1)
         hash = digester.hexdigest()
-        return hash == verifyHash
+        return hash == verify_hash
 
 
 class PlisioClient(_BaseClient):
