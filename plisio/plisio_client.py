@@ -251,8 +251,8 @@ class _BaseClient:
         key = bytes(str(self.__api_key), 'utf8')
         post_str = bytes(json.dumps(json_obj, separators=(',', ':')), 'utf8')
         digester = hmac.new(key, post_str, hashlib.sha1)
-        hash = digester.hexdigest()
-        return hash == verify_hash
+        hash_ = digester.hexdigest()
+        return hash_ == verify_hash
 
 
 class PlisioClient(_BaseClient):
@@ -293,7 +293,6 @@ class PlisioClient(_BaseClient):
         """
         request = self._get_currencies_request(fiat_currency=fiat_currency)
         return self._send_request(request)
-
 
     def invoice(
             self,

@@ -5,7 +5,7 @@ To use it, you should be registered on Plisio
 The account can be created [here](https://plisio.net/account/signup "Sign up"))
 You will receive a personal secret key, that is used for all calls to API.
 
-![Supported Versions](https://img.shields.io/badge/python-3.6%20%7C%203.7%20%7C%203.8%20%7C%203.9%20%7C%203.10-yellowgreen)
+![Supported Versions](https://img.shields.io/badge/python-3.6%20%7C%203.7%20%7C%203.8%20%7C%203.9%20%7C%203.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-yellowgreen)
 
 
 ##  Install

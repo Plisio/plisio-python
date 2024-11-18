@@ -60,7 +60,7 @@ class Currency(PlisioModel):
             fiat: 'plisio.FiatCurrency',
             fiat_rate: float,
             min_sum_in: float,
-            invoice_commission_percentage: int,
+            invoice_commission_percentage: float,
     ):
         self.currency = currency
         self.icon = icon
@@ -83,7 +83,8 @@ class Currency(PlisioModel):
             response_dict.get('fiat') and plisio.FiatCurrency[response_dict['fiat']],
             response_dict.get('fiat_rate') and float(response_dict['fiat_rate']),
             response_dict.get('min_sum_in') and float(response_dict['min_sum_in']),
-            response_dict.get('invoice_commission_percentage') and int(response_dict['invoice_commission_percentage']),
+            response_dict.get('invoice_commission_percentage') and float(
+                response_dict['invoice_commission_percentage']),
         )
 
 

@@ -5,7 +5,10 @@ class _EnumMeta(EnumMeta):
     def __getitem__(self, item):
         if item is None:
             return None
-        return super().__getitem__(item)
+        key = item.replace(' ', '_')
+        if key not in self._member_map_:
+            key = '_' + key
+        return super().__getitem__(key)
 
 
 class CryptoCurrency(Enum, metaclass=_EnumMeta):
@@ -209,6 +212,9 @@ class OperationStatus(Enum, metaclass=_EnumMeta):
     mismatch = auto()
     error = auto()
     cancelled = auto()
+    cancelled_duplicate = auto()
+    _111 = auto()
+    _22 = auto()
 
 
 class OperationType(Enum, metaclass=_EnumMeta):
