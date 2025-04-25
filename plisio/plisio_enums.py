@@ -12,26 +12,31 @@ class _EnumMeta(EnumMeta):
 
 
 class CryptoCurrency(Enum, metaclass=_EnumMeta):
-    ETH = 'Ethereum'
     BTC = 'Bitcoin'
     LTC = 'Litecoin'
     DASH = 'Dash'
-    ZEC = 'Zcash'
+    TZEC = 'Zcash'
     DOGE = 'Dogecoin'
     BCH = 'Bitcoin Cash'
     XMR = 'Monero'
-    USDT = 'Tether ERC-20'
-    SHIB = 'Shiba Inu',
-    USDC = 'USD Coin ERC-20',
-    TRX = 'Tron',
-    USDT_TRX = 'Tether TRC-20',
-    BNB = 'BNB Chain',
-    USDT_BSC = 'Teather BEP-20',
-    BUSD = 'Binance USD BEP-20',
-    ETC = 'Ethereum Classic',
-    TZEC = 'Zcash',
-    BTT_TRX = 'BitTorrent-Chain TRC-20',
+    LB = 'Love Bit BEP-20'
+    ETH = 'Ethereum'
+    USDT_SOL = 'Solana USDT'
+    SOL = 'Solana'
+    APE = 'ApeCoin ERC-20'
+    USDT_TON = 'Tether USDT'
+    TON = 'Toncoin'
+    ETC = 'Ethereum Classic'
+    BTT_TRX = 'BitTorrent-Chain TRC-20'
+    BUSD = 'Binance USD BEP-20'
+    USDT_BSC = 'Teather BEP-20'
+    BNB = 'BNB Chain'
+    USDT_TRX = 'Tether TRC-20'
+    TRX = 'Tron'
+    SHIB = 'Shiba Inu'
+    USDC = 'USD Coin ERC-20'
     TUSD = 'TrueUSD ERC-20'
+    USDT = 'Tether ERC-20'
 
 
 class FiatCurrency(Enum, metaclass=_EnumMeta):
